@@ -170,7 +170,6 @@
     <Content Include="packages.config" />
     <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
-    <None Include="Properties\PublishProfiles\1.pubxml" />
     <Content Include="Areas\Admin\Views\Groups\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Groups\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Groups\Details.cshtml" />
@@ -180,6 +179,7 @@
     <Content Include="Views\Book\BookList.cshtml" />
     <Content Include="Views\Book\EditBook.cshtml" />
     <Content Include="Views\Book\ShowBookDetails.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
