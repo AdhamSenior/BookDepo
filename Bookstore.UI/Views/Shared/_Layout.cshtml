@@ -35,6 +35,12 @@
               <li><a href="@Url.Action("ShowBookByPrice", "Book", new { minPrice = 50, maxPrice = int.MaxValue,area=""}, null)">  50$ < </a></li>
             </ul>
           </li> 
+            @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                <li>@Html.ActionLink("RolesAdmin", "Index", "Roles", new { area = "Admin"}, null)</li>
+                <li>@Html.ActionLink("UsersAdmin", "Index", "Users", new { area = "Admin" }, null)</li>
+                <li>@Html.ActionLink("GroupsAdmin", "Index", "Groups", new { area = "Admin" }, null)</li>
+            }
         </ul>
         @Html.Partial("_LoginPartial")
       </div>

@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Bookstore.UI.Controllers
 {
@@ -38,6 +39,19 @@ namespace Bookstore.UI.Controllers
             }
         }
 
+        private ApplicationRoleManager _roleManager;
+        public ApplicationRoleManager RoleManager
+        {
+            get
+            {
+                return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
+            }
+            private set
+            {
+                _roleManager = value;
+            }
+        }
+
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -57,6 +71,7 @@ namespace Bookstore.UI.Controllers
             }
             private set { _signInManager = value; }
         }
+
 
         //
         // POST: /Account/Login
@@ -153,6 +168,14 @@ namespace Bookstore.UI.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    var roleName = "Client";
+                    var role = RoleManager.FindByName(roleName);
+                    if(role == null)
+                    {
+                        role = new ApplicationRole(roleName);
+                        await RoleManager.CreateAsync(role);
+                    }
+                    var userRoleResult = UserManager.AddToRole(user.Id, role.Name);
                     var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
