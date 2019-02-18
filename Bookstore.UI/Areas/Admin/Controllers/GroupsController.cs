@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Bookstore.UI.Controllers
+namespace Bookstore.UI.Areas.Admin.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class GroupsController : Controller

@@ -30,18 +30,11 @@
               <span class="glyphicon glyphicon-filter"></span>  Filter <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-              <li><a href="@Url.Action("ShowBookByPrice", "Book", new { minPrice = 0, maxPrice = 20 ,area=""}, null)" > < 20$</a></li>
+              <li><a href="@Url.Action("ShowBookByPrice", "Book", new { minPrice = 0, maxPrice = 20 ,area=""}, null)"> < 20$</a></li>
               <li><a href="@Url.Action("ShowBookByPrice", "Book", new { minPrice = 20, maxPrice = 50 ,area=""}, null)">  20$-50$</a></li>
-              <li><a href="@Url.Action("ShowBookByPrice", "Book", new { minPrice = 50, maxPrice = int.MaxValue,area=""}, null)" >  50$ < </a></li>
+              <li><a href="@Url.Action("ShowBookByPrice", "Book", new { minPrice = 50, maxPrice = int.MaxValue,area=""}, null)">  50$ < </a></li>
             </ul>
-          </li>
-
-          @if (Request.IsAuthenticated && User.IsInRole("Admin"))
-          {
-    <li>@Html.ActionLink("RolesAdmin", "Index", "RolesAdmin",new { area = "Admin" },null)</li>
-    <li>@Html.ActionLink("UsersAdmin", "Index", "UsersAdmin", new { area = "Admin" }, null)</li>
-    <li>@Html.ActionLink("GroupsAdmin", "Index", "GroupsAdmin", new { area = "Admin" }, null)</li>
-  }
+          </li> 
         </ul>
         @Html.Partial("_LoginPartial")
       </div>

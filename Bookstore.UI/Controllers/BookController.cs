@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Bookstore.UI.Models;
-using Bookstore.UI.BookContext;
+
 
 namespace TestBookstore.Web.Controllers
 {
@@ -16,7 +16,7 @@ namespace TestBookstore.Web.Controllers
         {
             List<BookModel> activeBooks = null;
 
-            using (BookstoreEntities dbContext = new BookstoreEntities())
+            using (ApplicationDbContext dbContext = new ApplicationDbContext())
             {
                 if (!string.IsNullOrWhiteSpace(searchString))
                 {
@@ -41,7 +41,7 @@ namespace TestBookstore.Web.Controllers
         public ActionResult HiddenBookList()
         {
             List<BookModel> allHiddenBook = null;
-            using (BookstoreEntities dbContext = new BookstoreEntities())
+            using (ApplicationDbContext dbContext = new ApplicationDbContext())
             {
                 allHiddenBook = dbContext.Book.Where(book => book.Status == false).ToList();
             }
@@ -53,7 +53,7 @@ namespace TestBookstore.Web.Controllers
         public ActionResult ShowBookDetails(int id)
         {
             BookModel target = null;
-            using (BookstoreEntities dbContext = new BookstoreEntities())
+            using (ApplicationDbContext dbContext = new ApplicationDbContext())
             {
                 target = dbContext.Book.SingleOrDefault(t => t.Id == id);
             }
@@ -64,7 +64,7 @@ namespace TestBookstore.Web.Controllers
         public ActionResult ShowBookByPrice(int minPrice, int MaxPrice)
         {
             List<BookModel> selectedBooks = null;
-            using (BookstoreEntities dbContext = new BookstoreEntities())
+            using (ApplicationDbContext dbContext = new ApplicationDbContext())
             {
                 selectedBooks = dbContext.Book.Where(book => book.Price >= minPrice && book.Price < MaxPrice && book.Status == true).ToList();
             }
@@ -85,7 +85,7 @@ namespace TestBookstore.Web.Controllers
             {
                 book.Status = true;
                 book.CoverImagePath = "~/Images/Covers/DefaultBookCover.jpg";
-                using (BookstoreEntities dbContext = new BookstoreEntities())
+                using (ApplicationDbContext dbContext = new ApplicationDbContext())
                 {
                     if (this.Request.Files != null && this.Request.Files.Count > 0 && this.Request.Files[0].ContentLength > 0)
                     {
@@ -107,7 +107,7 @@ namespace TestBookstore.Web.Controllers
         public ActionResult DeleteBook(int id)
         {
             BookModel target = null;
-            using (BookstoreEntities dbContext = new BookstoreEntities())
+            using (ApplicationDbContext dbContext = new ApplicationDbContext())
             {
                 target = dbContext.Book.SingleOrDefault(t => t.Id == id);
                 target.Status = false;
@@ -122,7 +122,7 @@ namespace TestBookstore.Web.Controllers
         public ActionResult EditBook(int id)
         {
             BookModel target = null;
-            using (BookstoreEntities dbContext = new BookstoreEntities())
+            using (ApplicationDbContext dbContext = new ApplicationDbContext())
             {
                 target = dbContext.Book.SingleOrDefault(t => t.Id == id);
             }
@@ -136,7 +136,7 @@ namespace TestBookstore.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                using (BookstoreEntities dbContext = new BookstoreEntities())
+                using (ApplicationDbContext dbContext = new ApplicationDbContext())
                 {
                     if (this.Request.Files != null && this.Request.Files.Count > 0 && this.Request.Files[0].ContentLength > 0)
                     {

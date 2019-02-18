@@ -9,7 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Collections.Generic;
 
-namespace Bookstore.UI.Controllers
+namespace Bookstore.UI.Areas.Admin.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class RolesController : Controller

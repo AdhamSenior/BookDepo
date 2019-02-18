@@ -1,13 +1,13 @@
 namespace Bookstore.UI.Migrations
 {
-  using Bookstore.UI.BookContext;
+  
   using Bookstore.UI.Models;
   using System;
   using System.Data.Entity;
   using System.Data.Entity.Migrations;
   using System.Linq;
 
-  internal sealed class Configuration : DbMigrationsConfiguration<BookstoreEntities>
+  internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
   {
     public Configuration()
     {
@@ -15,7 +15,7 @@ namespace Bookstore.UI.Migrations
       AutomaticMigrationDataLossAllowed=true;
     }
 
-    protected override void Seed(BookstoreEntities db)
+    protected override void Seed(ApplicationDbContext db)
     {
       var books = new[]
       {
