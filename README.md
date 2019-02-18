@@ -1,4 +1,4 @@
-# BookDepo
-Online book store.
-admin name = "admin@example.com";
-password = "Admin@123456"
+# Online book store.
+
+Username: admin@example.com
+Password: Admin@123456
