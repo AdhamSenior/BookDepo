@@ -41,7 +41,7 @@ namespace Bookstore.UI.Controllers
 
     public ActionResult Index(string search, int? minPrice, int? maxPrice, int page = 1)
     {
-      var size = 20;
+      var size = 10;
       var query = DbContext.Books.Where(book => !book.IsDelete);
 
       if (!string.IsNullOrWhiteSpace(search))
@@ -74,7 +74,7 @@ namespace Bookstore.UI.Controllers
     [Authorize(Roles = RoleList.Buyer)]
     public ActionResult Offer(int page = 1)
     {
-      var size = 20;
+      var size = 5;
       var userId = User.Identity.GetUserId();
       var query = DbContext.Books.Where(book => !book.IsDelete && book.BuyerId == userId);
 

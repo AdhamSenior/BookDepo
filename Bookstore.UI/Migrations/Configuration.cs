@@ -42,41 +42,39 @@ namespace Bookstore.UI.Migrations
       if (!db.Users.Any())
       {
         var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(db));
-        var user1 = new ApplicationUser
+        var admin = new ApplicationUser
         {
           Id = Guid.NewGuid().ToString(),
           Email = "admin@example.com",
           UserName = "admin@example.com",
           EmailConfirmed = true
         };
-        manager.Create(user1, "admin@123456");
-        manager.AddToRole(user1.Id, RoleList.Admin);
+        manager.Create(admin, "admin@123456");
+        manager.AddToRole(admin.Id, RoleList.Admin);
 
-        var user2 = new ApplicationUser
+        var seller = new ApplicationUser
         {
           Id = Guid.NewGuid().ToString(),
           Email = "seller@example.com",
           UserName = "seller@example.com",
           EmailConfirmed = true
         };
-        manager.Create(user2, "seller@123456");
-        manager.AddToRole(user2.Id, RoleList.Seller);
+        manager.Create(seller, "seller@123456");
+        manager.AddToRole(seller.Id, RoleList.Seller);
 
-        var user3 = new ApplicationUser
+        var buyer = new ApplicationUser
         {
           Id = Guid.NewGuid().ToString(),
           Email = "buyer@example.com",
           UserName = "buyer@example.com",
           EmailConfirmed = true
         };
-        manager.Create(user3, "buyer@123456");
-        manager.AddToRole(user3.Id, RoleList.Buyer);
+        manager.Create(buyer, "buyer@123456");
+        manager.AddToRole(buyer.Id, RoleList.Buyer);
 
       }
 
-
-      var buyer = db.Users.FirstOrDefault(a => a.Email == "buyer@example.com");
-      var seller = db.Users.FirstOrDefault(a => a.Email == "seller@example.com");
+      var offerer = db.Users.FirstOrDefault(a => a.Email == "seller@example.com");
 
       var books = new[]
       {
@@ -90,8 +88,7 @@ namespace Bookstore.UI.Migrations
           Price = 25m,
           PublishYear = new DateTime(2015, 10, 10).ToShortDateString(),
           CoverImagePath = "~/Images/Covers/1.jpg",
-          BuyerId=buyer.Id,
-          SellerId=seller.Id
+          SellerId=offerer.Id
         },new Book
         {
           Name = "Harry Potter 2",
@@ -102,8 +99,7 @@ namespace Bookstore.UI.Migrations
           Price = 15m,
           PublishYear = new DateTime(2015, 10, 10).ToShortDateString(),
           CoverImagePath = "~/Images/Covers/2.jpg",
-          BuyerId=buyer.Id,
-          SellerId=seller.Id
+          SellerId=offerer.Id
         },new Book
         {
           Name = "Harry Potter 3",
@@ -114,8 +110,7 @@ namespace Bookstore.UI.Migrations
           Price = 25m,
           PublishYear = new DateTime(2015, 10, 10).ToShortDateString(),
           CoverImagePath = "~/Images/Covers/3.jpg",
-          BuyerId=buyer.Id,
-          SellerId=seller.Id
+          SellerId=offerer.Id
         },new Book
         {
           Name = "Harry Potter 4",
@@ -126,8 +121,7 @@ namespace Bookstore.UI.Migrations
           Price = 15m,
           PublishYear = new DateTime(2015, 10, 10).ToShortDateString(),
           CoverImagePath = "~/Images/Covers/4.jpg",
-          BuyerId=buyer.Id,
-          SellerId=seller.Id
+          SellerId=offerer.Id
         },new Book
         {
           Name = "Harry Potter 5",
@@ -138,8 +132,7 @@ namespace Bookstore.UI.Migrations
           Price = 25m,
           PublishYear = new DateTime(2015, 10, 10).ToShortDateString(),
           CoverImagePath = "~/Images/Covers/5.jpeg",
-          BuyerId=buyer.Id,
-          SellerId=seller.Id
+          SellerId=offerer.Id
         },new Book
         {
           Name = "Lord of rings",
@@ -150,8 +143,7 @@ namespace Bookstore.UI.Migrations
           Price = 55m,
           PublishYear = new DateTime(2015, 10, 10).ToShortDateString(),
           CoverImagePath = "~/Images/Covers/6.jpg",
-          BuyerId=buyer.Id,
-          SellerId=seller.Id
+          SellerId=offerer.Id
         },new Book
         {
           Name = "From good to great",
@@ -162,8 +154,7 @@ namespace Bookstore.UI.Migrations
           Price = 10m,
           PublishYear = new DateTime(2015, 10, 10).ToShortDateString(),
           CoverImagePath = "~/Images/Covers/9.jpg",
-          BuyerId=buyer.Id,
-          SellerId=seller.Id
+          SellerId=offerer.Id
         },new Book
         {
           Name = "Hobbit",
@@ -174,8 +165,7 @@ namespace Bookstore.UI.Migrations
           Price = 100m,
           PublishYear = new DateTime(2015, 10, 10).ToShortDateString(),
           CoverImagePath = "~/Images/Covers/7.jpg",
-          BuyerId=buyer.Id,
-          SellerId=seller.Id
+          SellerId=offerer.Id
         },new Book
         {
           Name = "New Land",
@@ -186,8 +176,7 @@ namespace Bookstore.UI.Migrations
           Price = 25m,
           PublishYear = new DateTime(2015, 10, 10).ToShortDateString(),
           CoverImagePath = "~/Images/Covers/10.jpg",
-          BuyerId=buyer.Id,
-          SellerId=seller.Id
+          SellerId=offerer.Id
         },new Book
         {
           Name = "Home Land",
@@ -198,8 +187,7 @@ namespace Bookstore.UI.Migrations
           Price = 100m,
           PublishYear = new DateTime(2015, 10, 10).ToShortDateString(),
           CoverImagePath = "~/Images/Covers/8.jpg",
-          BuyerId=buyer.Id,
-          SellerId=seller.Id
+          SellerId=offerer.Id
         }
       };
       db.Books.AddOrUpdate(a => a.Name, books);
