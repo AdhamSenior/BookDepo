@@ -6,8 +6,8 @@ admin@example.com / Admin@123456
 
 Seller:
 
-seller@example.com / Admin@123456
+seller@example.com / seller@123456
 
 Buyer:
 
-buyer@example.com / Admin@123456
+buyer@example.com / buyer@123456
