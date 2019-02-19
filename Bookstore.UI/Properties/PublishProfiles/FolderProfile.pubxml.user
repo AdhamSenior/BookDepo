@@ -43,7 +43,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/18/2019 16:20:17</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Users/Delete.cshtml">
-      <publishTime>02/18/2019 16:20:17</publishTime>
+      <publishTime>02/19/2019 12:12:01</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Users/Details.cshtml">
       <publishTime>02/18/2019 16:20:17</publishTime>
@@ -52,7 +52,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/18/2019 16:20:17</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Users/Index.cshtml">
-      <publishTime>02/18/2019 16:20:17</publishTime>
+      <publishTime>02/19/2019 14:13:28</publishTime>
     </File>
     <File Include="Areas/Admin/Views/web.config">
       <publishTime>02/18/2019 16:24:43</publishTime>
@@ -67,10 +67,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/18/2019 17:51:11</publishTime>
     </File>
     <File Include="bin/Bookstore.UI.dll">
-      <publishTime>02/18/2019 18:03:13</publishTime>
+      <publishTime>02/19/2019 14:42:58</publishTime>
     </File>
     <File Include="bin/Bookstore.UI.pdb">
-      <publishTime>02/18/2019 18:03:13</publishTime>
+      <publishTime>02/19/2019 14:42:58</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>02/18/2019 17:51:11</publishTime>
@@ -129,6 +129,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/Owin.dll">
       <publishTime>02/18/2019 17:51:11</publishTime>
     </File>
+    <File Include="bin/PagedList.dll">
+      <publishTime>09/30/2013 17:36:38</publishTime>
+    </File>
+    <File Include="bin/PagedList.Mvc.dll">
+      <publishTime>09/30/2013 18:15:20</publishTime>
+    </File>
     <File Include="bin/System.Web.Helpers.dll">
       <publishTime>02/18/2019 17:51:11</publishTime>
     </File>
@@ -153,11 +159,29 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/WebGrease.dll">
       <publishTime>02/18/2019 17:51:11</publishTime>
     </File>
+    <File Include="Content/bootstrap-theme.css">
+      <publishTime>02/18/2019 16:16:55</publishTime>
+    </File>
+    <File Include="Content/bootstrap-theme.min.css">
+      <publishTime>02/18/2019 16:16:55</publishTime>
+    </File>
+    <File Include="Content/bootstrap.css">
+      <publishTime>02/18/2019 16:16:55</publishTime>
+    </File>
+    <File Include="Content/bootstrap.min.css">
+      <publishTime>02/18/2019 16:16:55</publishTime>
+    </File>
+    <File Include="Content/PagedList.css">
+      <publishTime>02/19/2019 12:44:30</publishTime>
+    </File>
+    <File Include="Content/Site.css">
+      <publishTime>02/18/2019 16:16:55</publishTime>
+    </File>
     <File Include="Global.asax">
       <publishTime>02/18/2019 16:20:15</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>02/18/2019 16:16:56</publishTime>
+      <publishTime>02/19/2019 12:44:30</publishTime>
     </File>
     <File Include="Views/Account/ConfirmEmail.cshtml">
       <publishTime>02/18/2019 16:16:55</publishTime>
@@ -178,10 +202,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/18/2019 16:16:55</publishTime>
     </File>
     <File Include="Views/Account/Login.cshtml">
-      <publishTime>02/18/2019 16:20:16</publishTime>
+      <publishTime>02/19/2019 12:26:16</publishTime>
     </File>
     <File Include="Views/Account/Register.cshtml">
-      <publishTime>02/18/2019 16:20:16</publishTime>
+      <publishTime>02/19/2019 12:26:21</publishTime>
     </File>
     <File Include="Views/Account/ResetPassword.cshtml">
       <publishTime>02/18/2019 16:20:16</publishTime>
@@ -198,14 +222,26 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/Account/_ExternalLoginsListPartial.cshtml">
       <publishTime>02/18/2019 16:20:16</publishTime>
     </File>
+    <File Include="Views/Book/Add.cshtml">
+      <publishTime>02/19/2019 13:49:50</publishTime>
+    </File>
     <File Include="Views/Book/AddBook.cshtml">
       <publishTime>02/18/2019 16:22:37</publishTime>
     </File>
     <File Include="Views/Book/BookList.cshtml">
       <publishTime>02/18/2019 16:40:24</publishTime>
     </File>
+    <File Include="Views/Book/Details.cshtml">
+      <publishTime>02/19/2019 14:38:59</publishTime>
+    </File>
+    <File Include="Views/Book/Edit.cshtml">
+      <publishTime>02/19/2019 14:31:57</publishTime>
+    </File>
     <File Include="Views/Book/EditBook.cshtml">
       <publishTime>02/18/2019 16:22:47</publishTime>
+    </File>
+    <File Include="Views/Book/Index.cshtml">
+      <publishTime>02/19/2019 14:30:10</publishTime>
     </File>
     <File Include="Views/Book/ShowBookDetails.cshtml">
       <publishTime>02/18/2019 16:23:01</publishTime>
@@ -214,10 +250,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/18/2019 16:20:16</publishTime>
     </File>
     <File Include="Views/Manage/ChangePassword.cshtml">
-      <publishTime>02/18/2019 16:20:16</publishTime>
+      <publishTime>02/19/2019 13:00:39</publishTime>
     </File>
     <File Include="Views/Manage/Index.cshtml">
-      <publishTime>02/18/2019 16:20:16</publishTime>
+      <publishTime>02/19/2019 13:00:30</publishTime>
     </File>
     <File Include="Views/Manage/ManageLogins.cshtml">
       <publishTime>02/18/2019 16:20:16</publishTime>
@@ -229,19 +265,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/18/2019 16:20:17</publishTime>
     </File>
     <File Include="Views/Shared/Error.cshtml">
-      <publishTime>02/18/2019 16:16:56</publishTime>
+      <publishTime>02/19/2019 13:00:50</publishTime>
     </File>
     <File Include="Views/Shared/Lockout.cshtml">
-      <publishTime>02/18/2019 16:16:56</publishTime>
+      <publishTime>02/19/2019 12:52:47</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>02/18/2019 17:56:38</publishTime>
+      <publishTime>02/19/2019 14:14:05</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
-      <publishTime>02/18/2019 17:59:13</publishTime>
+      <publishTime>02/19/2019 14:13:12</publishTime>
     </File>
     <File Include="Views/Web.config">
-      <publishTime>02/18/2019 16:18:57</publishTime>
+      <publishTime>02/19/2019 13:02:02</publishTime>
     </File>
     <File Include="Views/_ViewStart.cshtml">
       <publishTime>02/18/2019 16:16:56</publishTime>
