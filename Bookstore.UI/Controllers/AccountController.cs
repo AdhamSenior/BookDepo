@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using Bookstore.UI.Models;
+using BotDetect.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -81,11 +82,6 @@ namespace Bookstore.UI.Controllers
       {
         case SignInStatus.Success:
           return RedirectToLocal(returnUrl);
-        case SignInStatus.LockedOut:
-          return View("Lockout");
-        case SignInStatus.RequiresVerification:
-          return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-        case SignInStatus.Failure:
         default:
           ModelState.AddModelError("", "Invalid login attempt.");
           return View(model);
@@ -105,11 +101,20 @@ namespace Bookstore.UI.Controllers
     [HttpPost]
     [AllowAnonymous]
     [ValidateAntiForgeryToken]
+    [CaptchaValidation("CaptchaCode", "ExampleCaptcha", "Incorrect CAPTCHA code!")]
     public async Task<ActionResult> Register(RegisterViewModel model)
     {
       if (ModelState.IsValid)
       {
-        var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+        MvcCaptcha.ResetCaptcha("ExampleCaptcha");
+
+        var user = new ApplicationUser
+        {
+          UserName = model.Email,
+          Email = model.Email,
+          EmailConfirmed = true,
+          FullName = model.FullName
+        };
         var result = await UserManager.CreateAsync(user, model.Password);
         if (result.Succeeded)
         {

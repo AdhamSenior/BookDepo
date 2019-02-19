@@ -24,6 +24,8 @@ namespace Bookstore.UI.Models
       return userIdentity;
     }
 
+    public string FullName { get; set; }
+
     public bool IsDeleted { get; set; }
 
     public virtual ICollection<Book> BuyerBooks { get; set; }
