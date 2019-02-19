@@ -3,26 +3,25 @@
 @{
   ViewBag.Title = "Add a new book:";
 }
-
-<div class="jumbotron">
+ 
   @using (Html.BeginForm("Add", "Book", FormMethod.Post, new { enctype = "multipart/form-data" }))
   {
 
-    <div>BookName:</div>
-    @Html.TextBoxFor(m => m.Name)
+    <div>Name:</div>
+    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
     @Html.ValidationMessageFor(m => m.Name)
-    <div>BookPrice:</div>
-    @Html.TextBoxFor(m => m.Price)
+    <div>Price:</div>
+    @Html.TextBoxFor(m => m.Price, new { @class = "form-control" })
     @Html.ValidationMessageFor(m => m.Price)
     <div>Cover Image:</div>
-    <input type="file" name="cover" />
+    <input type="file" name="cover" class="form-control"/>
     @Html.HiddenFor(m => m.CoverImagePath)
 
     <div>Authors:</div>
-    @Html.TextBoxFor(m => m.Author)
+    @Html.TextBoxFor(m => m.Author, new { @class = "form-control" })
     @Html.ValidationMessageFor(m => m.Author)
     <div>Description:</div>
-    @Html.TextAreaFor(m => m.Discription)
+    @Html.TextAreaFor(m => m.Discription,10,50, new { @class = "form-control" })
     @Html.ValidationMessageFor(m => m.Discription)
     <div>Condition:</div>
 
@@ -32,8 +31,7 @@
     @Html.Label("Used", "Used")
 
     <div>ISBN:</div>
-    @Html.TextBoxFor(m => m.ISBN)
+    @Html.TextBoxFor(m => m.ISBN, new { @class = "form-control" })
     <br />
-    <input type="submit" value="Add" /> 
-  }
-</div>
+    <input type="submit" value="Add" class="btn btn-primary btn-lg" /> 
+  } 

@@ -3,42 +3,40 @@
   ViewBag.Title = "Edit a book:";
 }
 
-<div class="jumbotron">
-  @using (Html.BeginForm("Edit", "Book", FormMethod.Post, new { enctype = "multipart/form-data" }))
-  {
-    @Html.HiddenFor(m => m.Id)
+@using (Html.BeginForm("Edit", "Book", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+  @Html.HiddenFor(m => m.Id)
 
-    <div>BookName:</div>
-    @Html.TextBoxFor(m => m.Name)
-    @Html.ValidationMessageFor(m => m.Name)
-    <div>BookPrice:</div>
-    @Html.TextBoxFor(m => m.Price)
-    @Html.ValidationMessageFor(m => m.Price)
+  <div>Name:</div>
+  @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+  @Html.ValidationMessageFor(m => m.Name)
+  <div>Price:</div>
+  @Html.TextBoxFor(m => m.Price, new { @class = "form-control" })
+  @Html.ValidationMessageFor(m => m.Price)
 
-    <div>Cover Image:</div>
-    <input type="file" name="cover" />
-    @Html.HiddenFor(m => m.CoverImagePath)
+  <div>Cover Image:</div>
+  <input type="file" name="cover" class="form-control" />
+  @Html.HiddenFor(m => m.CoverImagePath)
 
-    <div>Authors:</div>
-    @Html.TextBoxFor(m => m.Author)
-    @Html.ValidationMessageFor(m => m.Author)
-    <div>Description:</div>
-    @Html.TextAreaFor(m => m.Discription)
-    @Html.ValidationMessageFor(m => m.Discription)
-    <div>Condition:</div>
+  <div>Authors:</div>
+  @Html.TextBoxFor(m => m.Author, new { @class = "form-control" })
+  @Html.ValidationMessageFor(m => m.Author)
+  <div>Description:</div>
+  @Html.TextAreaFor(m => m.Discription, 10, 50,new { })
+  @Html.ValidationMessageFor(m => m.Discription)
+  <div>Condition:</div>
 
-    @Html.RadioButtonFor(model => model.Condition, "New")
-    @Html.Label("New", "New")
-    @Html.RadioButtonFor(model => model.Condition, "Used")
-    @Html.Label("Used", "Used")
+  @Html.RadioButtonFor(model => model.Condition, "New")
+  @Html.Label("New", "New")
+  @Html.RadioButtonFor(model => model.Condition, "Used")
+  @Html.Label("Used", "Used")
 
-    <div>ISBN:</div>
-    @Html.TextBoxFor(m => m.ISBN)
-    <br />
-    <input type="submit" value="Edit" />
-  }
-
+  <div>ISBN:</div>
+  @Html.TextBoxFor(m => m.ISBN, new { @class = "form-control" })
   <br />
-  @Html.ActionLink("Delete", "Delete", "Book", new { id = Model.Id }, new { @class = "btn btn-danger btn-lg", onclick = "return confirm('Want to delete?');" })
+  <input type="submit" value="Edit" class="btn btn-success btn-lg" />
+}
 
-</div>
+<br />
+@Html.ActionLink("Delete", "Delete", "Book", new { id = Model.Id }, new { @class = "btn btn-danger btn-lg", onclick = "return confirm('Want to delete?');" })
+
