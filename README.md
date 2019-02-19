@@ -1,6 +1,13 @@
 # Online book store.
 
+Admin:
 
-Username: admin@example.com
+admin@example.com / admin@123456
 
-Password: Admin@123456
+Seller:
+
+seller@example.com / seller@123456
+
+Buyer:
+
+buyer@example.com / buyer@123456
