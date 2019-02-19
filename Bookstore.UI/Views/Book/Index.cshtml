@@ -9,11 +9,11 @@
   <p>@Html.ActionLink("Create", "Add",new { },new { @class="btn btn-primary"})</p>
 }
   <div class="row">
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("Index","Book",FormMethod.Get))
     {
       @Html.Hidden("minPrice", (int?)ViewBag.MinPrice)
       @Html.Hidden("maxPrice", (int?)ViewBag.MaxPrice)
-      <input type="search" name="search" class="form-control pull-right" value="@ViewBag.Search" placeholder="Search..." />
+      <input type="search"  name="search" class="form-control pull-right" value="@ViewBag.Search" placeholder="Search..." />
     }
   </div>
 <br />
