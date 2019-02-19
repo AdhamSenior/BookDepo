@@ -18,7 +18,7 @@
   {
     <tr>
       <td>@Html.DisplayFor(modelItem => item.Id)</td>
-      <td>@Html.DisplayFor(modelItem => item.Buyer.FullName)</td>
+      <td>@Html.DisplayFor(modelItem => item.Buyer.FullName)  (@Html.DisplayFor(modelItem => item.Buyer.Email))</td>
       <td>
         @Html.ActionLink(item.Name, "Details", new { id = item.Id })
       </td>

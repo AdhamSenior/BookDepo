@@ -28,7 +28,7 @@
   @if (Model.Offered == true)
   {
     <h2 class="text-success">
-      Order is accepted for Buyer:@Model.Buyer.FullName
+      Order is accepted for Buyer:@Model.Buyer.FullName (@Model.Buyer.Email)
     </h2>
   }
 
@@ -91,9 +91,9 @@
 
       if (Model.Offered == false)
       {
-        <h2 class="text-warning">
-          Order is rejected for Buyer: @Model.Buyer.FullName
-        </h2>
+          <h2 class="text-warning">
+            Order is rejected for Buyer: @Model.Buyer.FullName (@Model.Buyer.Email)
+          </h2>
         <br />
         using (Html.BeginForm("Available", "Book", new { id = Model.Id }, FormMethod.Post))
         {
