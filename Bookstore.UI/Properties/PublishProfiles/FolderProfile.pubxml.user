@@ -73,13 +73,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/18/2019 17:51:11</publishTime>
     </File>
     <File Include="bin/Bookstore.UI.dll">
-      <publishTime>02/19/2019 16:52:26</publishTime>
+      <publishTime>02/19/2019 19:30:21</publishTime>
     </File>
     <File Include="bin/Bookstore.UI.pdb">
-      <publishTime>02/19/2019 16:52:26</publishTime>
+      <publishTime>02/19/2019 19:30:21</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>02/18/2019 17:51:11</publishTime>
+    </File>
+    <File Include="bin/EntityFramework.DynamicFilters.dll">
+      <publishTime>11/10/2017 15:12:02</publishTime>
     </File>
     <File Include="bin/EntityFramework.SqlServer.dll">
       <publishTime>02/18/2019 17:51:11</publishTime>
@@ -190,7 +193,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/18/2019 16:20:15</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>02/19/2019 16:46:51</publishTime>
+      <publishTime>02/19/2019 18:40:01</publishTime>
     </File>
     <File Include="Views/Account/ConfirmEmail.cshtml">
       <publishTime>02/18/2019 16:16:55</publishTime>
@@ -232,7 +235,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/18/2019 16:20:16</publishTime>
     </File>
     <File Include="Views/Book/Add.cshtml">
-      <publishTime>02/19/2019 15:16:01</publishTime>
+      <publishTime>02/19/2019 18:30:09</publishTime>
     </File>
     <File Include="Views/Book/AddBook.cshtml">
       <publishTime>02/18/2019 16:22:37</publishTime>
@@ -240,20 +243,23 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/Book/BookList.cshtml">
       <publishTime>02/18/2019 16:40:24</publishTime>
     </File>
+    <File Include="Views/Book/Deal.cshtml">
+      <publishTime>02/19/2019 19:18:26</publishTime>
+    </File>
     <File Include="Views/Book/Details.cshtml">
-      <publishTime>02/19/2019 16:44:24</publishTime>
+      <publishTime>02/19/2019 18:59:31</publishTime>
     </File>
     <File Include="Views/Book/Edit.cshtml">
-      <publishTime>02/19/2019 15:15:21</publishTime>
+      <publishTime>02/19/2019 19:10:13</publishTime>
     </File>
     <File Include="Views/Book/EditBook.cshtml">
       <publishTime>02/18/2019 16:22:47</publishTime>
     </File>
     <File Include="Views/Book/Index.cshtml">
-      <publishTime>02/19/2019 16:51:30</publishTime>
+      <publishTime>02/19/2019 19:00:01</publishTime>
     </File>
     <File Include="Views/Book/Offer.cshtml">
-      <publishTime>02/19/2019 16:51:27</publishTime>
+      <publishTime>02/19/2019 19:18:28</publishTime>
     </File>
     <File Include="Views/Book/ShowBookDetails.cshtml">
       <publishTime>02/18/2019 16:23:01</publishTime>
@@ -283,13 +289,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/19/2019 12:52:47</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>02/19/2019 15:08:57</publishTime>
+      <publishTime>02/19/2019 18:17:00</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>02/19/2019 15:04:26</publishTime>
     </File>
     <File Include="Views/Web.config">
-      <publishTime>02/19/2019 13:02:02</publishTime>
+      <publishTime>02/19/2019 18:22:02</publishTime>
     </File>
     <File Include="Views/_ViewStart.cshtml">
       <publishTime>02/18/2019 16:16:56</publishTime>
