@@ -2,12 +2,12 @@
 
 Admin:
 
-admin@example.com / Admin@123456
+admin@example.com / admin@123456
 
 Seller:
 
-seller@example.com / Seller@123456
+seller@example.com / seller@123456
 
 Buyer:
 
-buyer@example.com / Buyer@123456
+buyer@example.com / buyer@123456
