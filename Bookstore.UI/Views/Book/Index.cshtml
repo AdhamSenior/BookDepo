@@ -1,0 +1,50 @@
+﻿@model  IPagedList<Book>
+
+@{
+  ViewBag.Title = "Book List";
+}
+
+<div class="jumbotron">
+  <p>@Html.ActionLink("Create", "Add")</p>
+  <br />
+  @using (Html.BeginForm())
+  {
+    @Html.Hidden("minPrice", (int?)ViewBag.MinPrice)
+    @Html.Hidden("maxPrice", (int?)ViewBag.MaxPrice)
+    <p id="searchSection">
+      @Html.TextBox("search", (string)ViewBag.Search, new { id = "txtSearch", placeholder = "Find by name" })
+      <input class="btn btn-primary" type="submit" value="Search" />
+    </p>
+  }
+  <table class="table table-bordered">
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Image</th>
+      <th>Condition</th>
+      <th> </th>
+    </tr>
+    @foreach (var book in Model)
+    {
+      <tr>
+        <td>@Html.DisplayFor(modelItem => book.Id)</td>
+        <td>@Html.DisplayFor(modelItem => book.Name)</td>
+        <td>$ @Html.DisplayFor(modelItem => book.Price)</td>
+        <td><img src="@Url.Content(book.CoverImagePath)" alt="Cannot display cover" width="320" height="240" /></td>
+        <td>@Html.DisplayFor(modelItel => book.Condition)</td>
+        <td>
+          @Html.ActionLink("Details", "Details", "Book", new { id = book.Id }, new { @class = "btn btn-info" }) |
+          @Html.ActionLink("Edit", "Edit", "Book", new { id = book.Id }, new { @class = "btn btn-success" })|
+          @Html.ActionLink("Delete", "Delete", "Book", new { id = book.Id }, new { @class = "btn btn-delete" })
+        </td>
+
+      </tr>
+
+    }
+  </table>
+  <p>
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, minPrice = ViewBag.MinPrice, maxPrice = ViewBag.MaxPrice, search = ViewBag.Search }))
+  </p>
+</div>
+

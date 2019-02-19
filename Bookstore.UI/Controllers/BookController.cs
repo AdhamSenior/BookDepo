@@ -5,152 +5,145 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Bookstore.UI.Models;
+using Microsoft.AspNet.Identity.Owin;
+using PagedList;
 
-
-namespace TestBookstore.Web.Controllers
+namespace Bookstore.UI.Controllers
 {
-    
-    public class BookController : Controller
+
+  public class BookController : Controller
+  {
+
+    private ApplicationDbContext _dbContext;
+
+    public BookController()
     {
-        public ActionResult BookList(string searchString, int pageNumber = 1, int bookPerPage = 6)
-        {
-            List<BookModel> activeBooks = null;
-
-            using (ApplicationDbContext dbContext = new ApplicationDbContext())
-            {
-                if (!string.IsNullOrWhiteSpace(searchString))
-                {
-                    ViewBag.totalCount = dbContext.Book.Where(book => book.Status == true && book.Name.Contains(searchString)).Count();
-                    activeBooks = dbContext.Book.Where(book => book.Status == true && book.Name.Contains(searchString)).
-                    OrderBy(b => b.Id).Skip(bookPerPage * (pageNumber - 1)).
-                    Take(bookPerPage).ToList();
-                }
-                else
-                {
-                    ViewBag.totalCount = dbContext.Book.Where(book => book.Status == true).Count();
-                    activeBooks = dbContext.Book.Where(book => book.Status == true).
-                    OrderBy(b => b.Id).Skip(bookPerPage * (pageNumber - 1)).
-                    Take(bookPerPage).ToList();
-                }
-            }
-
-            return View(activeBooks);
-        }
-        
-
-        public ActionResult HiddenBookList()
-        {
-            List<BookModel> allHiddenBook = null;
-            using (ApplicationDbContext dbContext = new ApplicationDbContext())
-            {
-                allHiddenBook = dbContext.Book.Where(book => book.Status == false).ToList();
-            }
-
-            return View("BookList", allHiddenBook);
-        }
-
-
-        public ActionResult ShowBookDetails(int id)
-        {
-            BookModel target = null;
-            using (ApplicationDbContext dbContext = new ApplicationDbContext())
-            {
-                target = dbContext.Book.SingleOrDefault(t => t.Id == id);
-            }
-            return View(target);
-        }
-
-
-        public ActionResult ShowBookByPrice(int minPrice, int MaxPrice)
-        {
-            List<BookModel> selectedBooks = null;
-            using (ApplicationDbContext dbContext = new ApplicationDbContext())
-            {
-                selectedBooks = dbContext.Book.Where(book => book.Price >= minPrice && book.Price < MaxPrice && book.Status == true).ToList();
-            }
-            return View("BookList", selectedBooks);
-        }
-
-        [Authorize(Roles ="Admin")]
-        public ActionResult AddBook()
-        {
-            return View();
-        }
-
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        public ActionResult AddBook(BookModel book)
-        {
-            if (ModelState.IsValid)
-            {
-                book.Status = true;
-                book.CoverImagePath = "~/Images/Covers/DefaultBookCover.jpg";
-                using (ApplicationDbContext dbContext = new ApplicationDbContext())
-                {
-                    if (this.Request.Files != null && this.Request.Files.Count > 0 && this.Request.Files[0].ContentLength > 0)
-                    {
-                        string fileName = Path.GetFileName(this.Request.Files[0].FileName);
-                        string filePathOfWebsite = "~/Images/Covers/" + fileName;
-                        book.CoverImagePath = filePathOfWebsite;
-                        this.Request.Files[0].SaveAs(this.Server.MapPath(filePathOfWebsite));
-                    }
-                    dbContext.Entry(book).State = System.Data.Entity.EntityState.Added;
-                    dbContext.SaveChanges();
-                }
-                return RedirectToAction("BookList", new { pageNumber = 1 });
-            }
-            return View(book);
-        }
-
-
-        [Authorize(Roles = "Admin")]
-        public ActionResult DeleteBook(int id)
-        {
-            BookModel target = null;
-            using (ApplicationDbContext dbContext = new ApplicationDbContext())
-            {
-                target = dbContext.Book.SingleOrDefault(t => t.Id == id);
-                target.Status = false;
-                dbContext.Entry(target).State = System.Data.Entity.EntityState.Modified;
-                dbContext.SaveChanges();
-            }
-            return RedirectToAction("BookList", new { pageNumber = 1 });
-        }
-
-
-        [Authorize(Roles = "Admin")]
-        public ActionResult EditBook(int id)
-        {
-            BookModel target = null;
-            using (ApplicationDbContext dbContext = new ApplicationDbContext())
-            {
-                target = dbContext.Book.SingleOrDefault(t => t.Id == id);
-            }
-            return View(target);
-        }
-
-
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        public ActionResult EditBook(BookModel book)
-        {
-            if (ModelState.IsValid)
-            {
-                using (ApplicationDbContext dbContext = new ApplicationDbContext())
-                {
-                    if (this.Request.Files != null && this.Request.Files.Count > 0 && this.Request.Files[0].ContentLength > 0)
-                    {
-                        string fileName = Path.GetFileName(this.Request.Files[0].FileName);
-                        string filePathOfWebsite = "~/Images/Covers/" + fileName;
-                        book.CoverImagePath = filePathOfWebsite;
-                        this.Request.Files[0].SaveAs(this.Server.MapPath(filePathOfWebsite));
-                    }
-                    dbContext.Entry(book).State = System.Data.Entity.EntityState.Modified;
-                    dbContext.SaveChanges();
-                }
-                return RedirectToAction("BookList", new { pageNumber = 1 });
-            }
-            return View(book);
-        }
     }
+
+    public BookController(ApplicationDbContext dbContext)
+    {
+      _dbContext = dbContext;
+    }
+
+    public ApplicationDbContext DbContext
+    {
+      get
+      {
+        return _dbContext ?? HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+      }
+      private set
+      {
+        _dbContext = value;
+      }
+    }
+
+    public ActionResult Index(string search, int? minPrice, int? maxPrice, int page = 1)
+    {
+      var size = 20;
+      var query = DbContext.Books.Where(book => book.IsDelete == true);
+
+      if (!string.IsNullOrWhiteSpace(search))
+      {
+        query = query.Where(book => book.Name.Contains(search));
+      }
+
+      if (minPrice.HasValue)
+      {
+        query = query.Where(book => book.Price >= minPrice.Value);
+      }
+
+      if (maxPrice.HasValue)
+      {
+        query = query.Where(book => book.Price >= maxPrice.Value);
+      }
+
+      ViewBag.Search = search;
+      ViewBag.MinPrice = minPrice;
+      ViewBag.MaxPrice = maxPrice;
+
+      return View(query.OrderByDescending(b => b.Id).ToPagedList(page, size));
+    }
+
+    public ActionResult Details(int id)
+    {
+      Book target = null;
+      using (ApplicationDbContext dbContext = new ApplicationDbContext())
+      {
+        target = dbContext.Books.SingleOrDefault(t => t.Id == id);
+      }
+      return View(target);
+    }
+
+    [Authorize(Roles = RoleList.Seller)]
+    public ActionResult Add()
+    {
+      return View();
+    }
+
+    [Authorize(Roles = RoleList.Seller)]
+    [HttpPost]
+    public ActionResult Add(Book book)
+    {
+      if (ModelState.IsValid)
+      {
+        book.IsDelete = true;
+        book.CoverImagePath = "~/Images/Covers/DefaultBookCover.jpg";
+
+        if (Request.Files != null && Request.Files.Count > 0 && Request.Files[0].ContentLength > 0)
+        {
+          var fileName = Path.GetFileName(Request.Files[0].FileName);
+          var filePathOfWebsite = "~/Images/Covers/" + fileName;
+          book.CoverImagePath = filePathOfWebsite;
+          Request.Files[0].SaveAs(Server.MapPath(filePathOfWebsite));
+        }
+        DbContext.Entry(book).State = System.Data.Entity.EntityState.Added;
+        DbContext.SaveChanges();
+
+        return RedirectToAction("Index");
+      }
+      return View(book);
+    }
+
+    [Authorize(Roles = RoleList.Seller)]
+    public ActionResult Delete(int id)
+    {
+
+      var model = DbContext.Books.SingleOrDefault(t => t.Id == id);
+       
+      model.IsDelete = true;
+      DbContext.Entry(model).State = System.Data.Entity.EntityState.Modified;
+      DbContext.SaveChanges();
+
+      return RedirectToAction("Index");
+    }
+
+    [Authorize(Roles = RoleList.Seller)]
+    public ActionResult Edit(int id)
+    {
+      var model = DbContext.Books.SingleOrDefault(t => t.Id == id);
+
+      return View(model);
+    }
+
+    [Authorize(Roles =RoleList.Seller)]
+    [HttpPost]
+    public ActionResult Edit(Book book)
+    {
+      if (!ModelState.IsValid)
+        return View(book);
+
+      if (Request.Files != null && Request.Files.Count > 0 && Request.Files[0].ContentLength > 0)
+      {
+        var fileName = Path.GetFileName(Request.Files[0].FileName);
+        var filePathOfWebsite = "~/Images/Covers/" + fileName;
+        book.CoverImagePath = filePathOfWebsite;
+        Request.Files[0].SaveAs(Server.MapPath(filePathOfWebsite));
+      }
+      DbContext.Entry(book).State = System.Data.Entity.EntityState.Modified;
+      DbContext.SaveChanges();
+
+      return RedirectToAction("Index");
+    }
+
+  }
 }

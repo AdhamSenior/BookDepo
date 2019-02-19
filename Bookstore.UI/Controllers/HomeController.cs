@@ -8,10 +8,9 @@ namespace Bookstore.UI.Controllers
 {
   public class HomeController : Controller
   {
-    // GET: Home
     public ActionResult Index()
     {
-      return RedirectToAction("BookList", "Book");
+      return RedirectToAction("Index", "Book");
     }
   }
 }
