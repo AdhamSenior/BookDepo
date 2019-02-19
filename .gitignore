@@ -5,3 +5,4 @@
 /deploy
 /Bookstore.sln.DotSettings.user
 /Bookstore.UI/Bookstore.ui.csproj.user
+/Bookstore.UI/Properties/PublishProfiles/FolderProfile.pubxml.user
