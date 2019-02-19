@@ -10,6 +10,12 @@
   <h3>Authors: @Model.Author</h3>
   <h3>Book Condition: @Model.Condition</h3>
   <p>Description: @Model.Discription</p>
-  <img src="@Url.Content(@Model.CoverImagePath)" alt="Cannot display cover" />
+  <img src="@Url.Content(Model.CoverImagePath)" alt="Cannot display cover" />
+  @if (User.IsInRole(RoleList.Buyer))
+  {
+    <br />
+    <br />
+    <a href="mailto:@(Model.Seller.Email)?subject=@(Model.Name)&body=I want order on this book item #@(Model.Id)" class="btn btn-primary btn-lg" target="_top">Order</a>
+  }
 </div>
 

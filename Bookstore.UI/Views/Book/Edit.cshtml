@@ -33,12 +33,7 @@
     @Html.Label("Used", "Used")
 
     <div>ISBN:</div>
-    @Html.TextBoxFor(m => m.ISBN)
-    <br />
-    @Html.RadioButtonFor(model => model.Status, "false")
-    @Html.Label("delete")
-    @Html.RadioButtonFor(model => model.Status, "true")
-    @Html.Label("recover")
+    @Html.TextBoxFor(m => m.ISBN) 
     <br />
     <input type="submit" value="Edit" /> 
   }

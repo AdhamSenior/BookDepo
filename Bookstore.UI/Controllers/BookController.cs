@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Bookstore.UI.Models;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using PagedList;
 
@@ -71,12 +73,9 @@ namespace Bookstore.UI.Controllers
 
     public ActionResult Details(int id)
     {
-      Book target = null;
-      using (ApplicationDbContext dbContext = new ApplicationDbContext())
-      {
-        target = dbContext.Books.SingleOrDefault(t => t.Id == id);
-      }
-      return View(target);
+      var model = DbContext.Books.Where(t => t.Id == id).Include(a => a.Seller).FirstOrDefault();
+
+      return View(model);
     }
 
     [Authorize(Roles = RoleList.Seller)]
@@ -91,7 +90,7 @@ namespace Bookstore.UI.Controllers
     {
       if (ModelState.IsValid)
       {
-        book.IsDelete = true;
+        book.SellerId = User.Identity.GetUserId();
         book.CoverImagePath = "~/Images/Covers/DefaultBookCover.jpg";
 
         if (Request.Files != null && Request.Files.Count > 0 && Request.Files[0].ContentLength > 0)
@@ -136,6 +135,8 @@ namespace Bookstore.UI.Controllers
     {
       if (!ModelState.IsValid)
         return View(book);
+
+      book.SellerId = User.Identity.GetUserId();
 
       if (Request.Files != null && Request.Files.Count > 0 && Request.Files[0].ContentLength > 0)
       {

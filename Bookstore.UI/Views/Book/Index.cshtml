@@ -41,7 +41,7 @@
           @if (User.IsInRole(RoleList.Seller))
           {
             @Html.ActionLink("Edit", "Edit", "Book", new { id = book.Id }, new { @class = "btn btn-success" })
-            @Html.ActionLink("Delete", "Delete", "Book", new { id = book.Id }, new { @class = "btn btn-danger" })
+            @Html.ActionLink("Delete", "Delete", "Book", new { id = book.Id }, new { @class = "btn btn-danger" ,onclick="return confirm('Are you sure?');"})
           }
         </td>
 
