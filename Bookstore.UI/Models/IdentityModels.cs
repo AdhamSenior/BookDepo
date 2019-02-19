@@ -1,8 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
+using EntityFramework.DynamicFilters;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -20,7 +24,7 @@ namespace Bookstore.UI.Models
       return userIdentity;
     }
 
-    public bool IsDelete { get; set; }
+    public bool IsDeleted { get; set; }
 
     public virtual ICollection<Book> BuyerBooks { get; set; }
 
@@ -37,6 +41,32 @@ namespace Bookstore.UI.Models
 
     public DbSet<Book> Books { get; set; }
 
+    public override int SaveChanges()
+    {
+
+      try
+      { 
+        return base.SaveChanges();
+      }
+      catch (DbEntityValidationException e)
+      {
+
+        var sb = new StringBuilder();
+
+        foreach (var eve in e.EntityValidationErrors)
+        {
+          sb.AppendLine(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:", eve.Entry.Entity.GetType().Name, eve.Entry.State));
+
+          foreach (var ve in eve.ValidationErrors)
+          {
+            sb.AppendLine(string.Format("- Property: \"{0}\", Error: \"{1}\"", ve.PropertyName, ve.ErrorMessage));
+          }
+        }
+
+        throw new DbEntityValidationException(sb.ToString(), e);
+      }
+    }
+
     protected override void OnModelCreating(DbModelBuilder modelBuilder)
     {
       base.OnModelCreating(modelBuilder);
@@ -50,6 +80,8 @@ namespace Bookstore.UI.Models
          .HasOptional(s => s.Seller)
          .WithMany(g => g.SellerBooks)
          .HasForeignKey(s => s.SellerId);
+
+      modelBuilder.DisableFilterGlobally("IsDeleted");
     }
 
     public static ApplicationDbContext Create()

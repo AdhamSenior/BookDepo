@@ -9,7 +9,7 @@
   <h2>Price: $ @Model.Price </h2>
   <h3>Authors: @Model.Author</h3>
   <h3>Book Condition: @Model.Condition</h3>
-  <p>Description: @Model.Discription</p>
+  <p>Description: @Model.Description</p>
   <img src="@Url.Content(Model.CoverImagePath)" alt="Cannot display cover" />
 
   <br />
@@ -21,23 +21,91 @@
     @Html.ActionLink("Edit", "Edit", "Book", new { id = Model.Id }, new { @class = "btn btn-success  btn-lg" })
   }
 
+  <h2 class="text-info">
+    @TempData["message"]
+  </h2>
+
+  @if (Model.Offered == true)
+  {
+    <h2 class="text-success">
+      Order is accepted for Buyer:@Model.Buyer.UserName
+    </h2>
+  }
+
   @if (User.IsInRole(RoleList.Buyer))
   {
 
-    <h2 class="text-success">
-      @TempData["success"]
-    </h2>
+    <br />
 
-    if (!Model.Offered && Model.BuyerId == null)
+    if (Model.Offered == null && Model.BuyerId == null)
     {
-      <br />
       using (Html.BeginForm("Order", "Book", new { id = Model.Id }, FormMethod.Post))
       {
-        <button type="submit" class="btn btn-primary btn-lg" target="_top">To Order</button>
+        <button type="submit" class="btn btn-primary btn-lg">Order</button>
+      }
+    }
+
+    if (Model.Offered == null && Model.BuyerId == User.Identity.GetUserId())
+    {
+      <h2 class="text-warning">
+        Order in processing
+      </h2>
+    }
+
+    if (Model.Offered == false && Model.BuyerId == User.Identity.GetUserId())
+    {
+      <h2 class="text-danger">
+        Order is rejected
+      </h2>
+    }
+
+    <br />
+
+    <p>
+      <a href="mailto:@(Model.Seller.Email)" class="btn btn-info btn-lg" target="_top">E-mail</a>
+    </p>
+  }
+
+  @if (User.IsInRole(RoleList.Seller))
+  {
+
+    <br />
+
+    if (Model.BuyerId != null)
+    {
+
+      if (Model.Offered == null)
+      {
+        using (Html.BeginForm("Accept", "Book", new { id = Model.Id }, FormMethod.Post))
+        {
+          <button type="submit" class="btn btn-primary btn-lg">Accept</button>
+        }
+
+        <br />
+
+        using (Html.BeginForm("Reject", "Book", new { id = Model.Id }, FormMethod.Post))
+        {
+          <button type="submit" class="btn btn-danger btn-lg">Reject</button>
+        }
+      }
+
+      if (Model.Offered == false)
+      {
+        <h2 class="text-warning">
+          Order is rejected for Buyer: @Model.Buyer.UserName
+        </h2>
+        <br />
+        using (Html.BeginForm("Available", "Book", new { id = Model.Id }, FormMethod.Post))
+        {
+          <button type="submit" class="btn btn-info btn-lg">Available</button>
+        }
       }
       <br />
+      <p>
+        <a href="mailto:@(Model.Buyer.Email)" class="btn btn-info btn-lg" target="_top">E-mail</a>
+      </p>
     }
-    <a href="mailto:@(Model.Seller.Email)?subject=@(Model.Name)&body=I want order on this book item #@(Model.Id)" class="btn btn-info btn-lg" target="_top">Seller e-mail</a>
   }
+
 </div>
 

@@ -51,6 +51,13 @@
               <a href="@Url.Action("Offer","Book", new { area=""})"><span class="glyphicon glyphicon-shopping-cart"></span> Offers </a>              
             </li>
           }
+          
+          @if (User.IsInRole(RoleList.Seller))
+          {
+            <li>
+              <a href="@Url.Action("Deal","Book", new { area=""})"><span class="glyphicon glyphicon-shopping-cart"></span> Deals</a>              
+            </li>
+          }
 
         </ul>
         @Html.Partial("_LoginPartial")

@@ -30,9 +30,8 @@ namespace Bookstore.UI.Models
     [StringLength(50)]
     public string Author { get; set; }
 
-    [Required]
     [StringLength(800)]
-    public string Discription { get; set; }
+    public string Description { get; set; }
 
     [StringLength(500)]
     public string Condition { get; set; }
@@ -40,7 +39,7 @@ namespace Bookstore.UI.Models
     [StringLength(15)]
     public string PublishYear { get; set; }
 
-    public bool IsDelete { get; set; }
+    public bool IsDeleted { get; set; }
 
     [StringLength(50)]
     public string ISBN { get; set; }
@@ -49,14 +48,14 @@ namespace Bookstore.UI.Models
     public DateTime CreatedDate { get; set; }
 
     [Column(TypeName = "datetime2")]
-    public DateTime? ModefiedDate { get; set; }
+    public DateTime? ModifiedDate { get; set; }
 
     [StringLength(50)]
     public string SellerId { get; set; }
 
     public virtual ApplicationUser Seller { get; set; }
 
-    public bool Offered { get; set; }
+    public bool? Offered { get; set; }
 
     [Column(TypeName = "datetime2")]
     public DateTime? OfferDate { get; set; }

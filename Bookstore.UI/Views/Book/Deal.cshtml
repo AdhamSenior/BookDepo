@@ -1,27 +1,16 @@
 ﻿@model  IPagedList<Book>
 
 @{
-  ViewBag.Title = "Book List";
+  ViewBag.Title = "Deal List";
 }
 
-@if (User.IsInRole(RoleList.Seller))
-{
-  <p>@Html.ActionLink("Create", "Add",new { },new { @class="btn btn-primary"})</p>
-}
-  <div class="row">
-    @using (Html.BeginForm("Index","Book",FormMethod.Get))
-    {
-      @Html.Hidden("minPrice", (int?)ViewBag.MinPrice)
-      @Html.Hidden("maxPrice", (int?)ViewBag.MaxPrice)
-      <input type="search"  name="search" class="form-control pull-right" value="@ViewBag.Search" placeholder="Search..." />
-    }
-  </div>
-<br />
 <table class="table table-bordered">
   <tr>
     <th>#</th>
+    <th>Buyer</th>
     <th>Name</th>
     <th>Price</th>
+    <th>Status</th>
     <th>Image</th>
     <th>Condition</th>
   </tr>
@@ -29,10 +18,25 @@
   {
     <tr>
       <td>@Html.DisplayFor(modelItem => item.Id)</td>
+      <td>@Html.DisplayFor(modelItem => item.Buyer.UserName)</td>
       <td>
-        @Html.ActionLink(item.Name,"Details",new { id = item.Id })
+        @Html.ActionLink(item.Name, "Details", new { id = item.Id })
       </td>
       <td>$ @Html.DisplayFor(modelItem => item.Price)</td>
+      <td>
+        @if (item.Offered == true)
+        {
+          <h4 class="alert alert-success">Accepted</h4>
+        }
+        @if (item.Offered == false)
+        {
+          <h4 class="alert alert-danger">Rejected</h4>
+        }
+        @if (item.Offered == null)
+        {
+          <h4 class="alert alert-warning">In process</h4>
+        }
+      </td>
       <td>
         <a target="_blank" href="@Url.Content(item.CoverImagePath)">
           <img src="@Url.Content(item.CoverImagePath)?width=120&height=160&crop=auto" alt="Cannot display cover" />
@@ -44,6 +48,7 @@
 
   }
 </table>
+
 <p>
   @Html.PagedListPager(Model, page => Url.Action("Index", new { page, minPrice = ViewBag.MinPrice, maxPrice = ViewBag.MaxPrice, search = ViewBag.Search }))
 </p>

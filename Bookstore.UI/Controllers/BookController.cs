@@ -42,48 +42,60 @@ namespace Bookstore.UI.Controllers
     public ActionResult Index(string search, int? minPrice, int? maxPrice, int page = 1)
     {
       var size = 10;
-      var query = DbContext.Books.Where(book => !book.IsDelete);
+      var query = DbContext.Books.Where(a => a.BuyerId == null && a.Offered == null);
 
       if (!string.IsNullOrWhiteSpace(search))
       {
-        query = query.Where(book => book.Name.Contains(search));
+        query = query.Where(a => a.Name.Contains(search));
       }
 
       if (minPrice.HasValue && !maxPrice.HasValue)
       {
-        query = query.Where(book => book.Price >= minPrice.Value);
+        query = query.Where(a => a.Price >= minPrice.Value);
       }
 
       if (!minPrice.HasValue && maxPrice.HasValue)
       {
-        query = query.Where(book => book.Price <= maxPrice.Value);
+        query = query.Where(a => a.Price <= maxPrice.Value);
       }
 
       if (minPrice.HasValue && maxPrice.HasValue)
       {
-        query = query.Where(book => book.Price >= minPrice.Value && book.Price <= maxPrice.Value);
+        query = query.Where(a => a.Price >= minPrice.Value && a.Price <= maxPrice.Value);
       }
 
       ViewBag.Search = search;
       ViewBag.MinPrice = minPrice;
       ViewBag.MaxPrice = maxPrice;
 
-      return View(query.OrderByDescending(b => b.Id).ToPagedList(page, size));
+      return View(query.OrderByDescending(a => a.Id).ToPagedList(page, size));
     }
 
     [Authorize(Roles = RoleList.Buyer)]
     public ActionResult Offer(int page = 1)
     {
-      var size = 5;
+      var size = 10;
       var userId = User.Identity.GetUserId();
-      var query = DbContext.Books.Where(book => !book.IsDelete && book.BuyerId == userId);
+      var query = DbContext.Books.Where(a => a.BuyerId == userId).Include(a => a.Seller);
+
+      return View(query.OrderByDescending(b => b.Id).ToPagedList(page, size));
+    }
+
+    [Authorize(Roles = RoleList.Seller)]
+    public ActionResult Deal(int page = 1)
+    {
+      var size = 10;
+      var query = DbContext.Books.Where(a => a.BuyerId != null || a.Offered != null).Include(a => a.Buyer);
 
       return View(query.OrderByDescending(b => b.Id).ToPagedList(page, size));
     }
 
     public ActionResult Details(int id)
     {
-      var model = DbContext.Books.Where(t => t.Id == id).Include(a => a.Seller).FirstOrDefault();
+      var model = DbContext.Books.Where(t => t.Id == id).Include(a => a.Buyer).Include(a => a.Seller).FirstOrDefault();
+
+      if (model == null)
+        return HttpNotFound();
 
       return View(model);
     }
@@ -102,6 +114,8 @@ namespace Bookstore.UI.Controllers
       {
         model.SellerId = User.Identity.GetUserId();
         model.CoverImagePath = "~/Images/Covers/DefaultBookCover.jpg";
+        model.CreatedDate = DateTime.Now;
+        model.ModifiedDate = DateTime.Now;
 
         if (Request.Files != null && Request.Files.Count > 0 && Request.Files[0].ContentLength > 0)
         {
@@ -110,7 +124,8 @@ namespace Bookstore.UI.Controllers
           model.CoverImagePath = filePathOfWebsite;
           Request.Files[0].SaveAs(Server.MapPath(filePathOfWebsite));
         }
-        DbContext.Entry(model).State = EntityState.Added;
+
+        DbContext.Books.Add(model);
         DbContext.SaveChanges();
 
         return RedirectToAction("Index");
@@ -122,18 +137,84 @@ namespace Bookstore.UI.Controllers
     [HttpPost]
     public ActionResult Order(int id)
     {
-      var model = DbContext.Books.SingleOrDefault(t => t.Id == id);
+      var model = DbContext.Books.FirstOrDefault(t => t.Id == id);
 
-      if (model != null && !model.Offered)
+      if (model == null)
+        return HttpNotFound();
+
+      if (model.Offered == null && model.BuyerId == null)
       {
-        TempData["success"] = "Order Submission Successful!";
-
-        model.Offered = true;
-        model.OfferDate = DateTime.Now;
         model.BuyerId = User.Identity.GetUserId();
 
-        DbContext.Entry(model).State = EntityState.Modified;
         DbContext.SaveChanges();
+
+        TempData["message"] = "Order submission successful!";
+      }
+
+      return RedirectToAction("Details", new { id });
+    }
+
+    [Authorize(Roles = RoleList.Seller)]
+    [HttpPost]
+    public ActionResult Accept(int id)
+    {
+      var model = DbContext.Books.FirstOrDefault(t => t.Id == id);
+
+      if (model == null)
+        return HttpNotFound();
+
+      if (model.Offered == null && model.BuyerId != null)
+      {
+        model.Offered = true;
+        model.OfferDate = DateTime.Now;
+
+        DbContext.SaveChanges();
+
+        TempData["message"] = "Order accepted.";
+      }
+
+      return RedirectToAction("Details", new { id });
+    }
+
+    [Authorize(Roles = RoleList.Seller)]
+    [HttpPost]
+    public ActionResult Available(int id)
+    {
+      var model = DbContext.Books.FirstOrDefault(t => t.Id == id);
+
+      if (model == null)
+        return HttpNotFound();
+
+      if (model.Offered == false && model.BuyerId != null)
+      {
+        model.Offered = null;
+        model.OfferDate = null;
+        model.BuyerId = null;
+
+        DbContext.SaveChanges();
+
+        TempData["message"] = "Book is available for buyers.";
+      }
+
+      return RedirectToAction("Details", new { id });
+    }
+
+    [Authorize(Roles = RoleList.Seller)]
+    [HttpPost]
+    public ActionResult Reject(int id)
+    {
+      var model = DbContext.Books.FirstOrDefault(t => t.Id == id);
+
+      if (model == null)
+        return HttpNotFound();
+
+      if (model.Offered == null && model.BuyerId != null)
+      {
+        model.Offered = false;
+
+        DbContext.SaveChanges();
+
+        TempData["message"] = "Order rejected!";
       }
 
       return RedirectToAction("Details", new { id });
@@ -143,10 +224,12 @@ namespace Bookstore.UI.Controllers
     public ActionResult Delete(int id)
     {
 
-      var model = DbContext.Books.SingleOrDefault(t => t.Id == id);
+      var model = DbContext.Books.FirstOrDefault(t => t.Id == id);
 
-      model.IsDelete = true;
-      DbContext.Entry(model).State = EntityState.Modified;
+      if (model == null)
+        return HttpNotFound();
+
+      model.IsDeleted = true;
       DbContext.SaveChanges();
 
       return RedirectToAction("Index");
@@ -155,7 +238,10 @@ namespace Bookstore.UI.Controllers
     [Authorize(Roles = RoleList.Seller)]
     public ActionResult Edit(int id)
     {
-      var model = DbContext.Books.SingleOrDefault(t => t.Id == id);
+      var model = DbContext.Books.FirstOrDefault(t => t.Id == id);
+
+      if (model == null)
+        return HttpNotFound();
 
       return View(model);
     }
@@ -167,17 +253,22 @@ namespace Bookstore.UI.Controllers
       if (!ModelState.IsValid)
         return View(model);
 
-      model.SellerId = User.Identity.GetUserId();
-
-      if (Request.Files != null && Request.Files.Count > 0 && Request.Files[0].ContentLength > 0)
+      var ent = DbContext.Books.Find(model.Id);
+      if (ent != null)
       {
-        var fileName = Path.GetFileName(Request.Files[0].FileName);
-        var filePathOfWebsite = "~/Images/Covers/" + fileName;
-        model.CoverImagePath = filePathOfWebsite;
-        Request.Files[0].SaveAs(Server.MapPath(filePathOfWebsite));
+        ent.SellerId = User.Identity.GetUserId();
+        ent.ModifiedDate = DateTime.Now;
+         
+        if (Request.Files != null && Request.Files.Count > 0 && Request.Files[0].ContentLength > 0)
+        {
+          var fileName = Path.GetFileName(Request.Files[0].FileName);
+          var filePathOfWebsite = "~/Images/Covers/" + fileName;
+          ent.CoverImagePath = filePathOfWebsite;
+          Request.Files[0].SaveAs(Server.MapPath(filePathOfWebsite));
+        }
+
+        DbContext.SaveChanges();
       }
-      DbContext.Entry(model).State = EntityState.Modified;
-      DbContext.SaveChanges();
 
       return RedirectToAction("Index");
     }

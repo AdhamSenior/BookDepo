@@ -21,8 +21,8 @@
     @Html.TextBoxFor(m => m.Author, new { @class = "form-control" })
     @Html.ValidationMessageFor(m => m.Author)
     <div>Description:</div>
-    @Html.TextAreaFor(m => m.Discription,10,50, new { @class = "form-control" })
-    @Html.ValidationMessageFor(m => m.Discription)
+    @Html.TextAreaFor(m => m.Description,10,50, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Description)
     <div>Condition:</div>
 
     @Html.RadioButtonFor(model => model.Condition, "New")

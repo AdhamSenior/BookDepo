@@ -43,7 +43,7 @@ namespace Bookstore.UI.Areas.Admin.Controllers
     {
       var query = await UserManager.Users.ToArrayAsync();
 
-      return View(query.Where(w => UserManager.IsInRole(w.Id, RoleList.Buyer) && !w.IsDelete));
+      return View(query.Where(w => UserManager.IsInRole(w.Id, RoleList.Buyer) ));
     }
 
 
@@ -54,10 +54,12 @@ namespace Bookstore.UI.Areas.Admin.Controllers
         return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
       }
       var user = await UserManager.FindByIdAsync(id);
+
       if (user == null)
       {
         return HttpNotFound();
       }
+
       return View(user);
     }
 
@@ -79,11 +81,11 @@ namespace Bookstore.UI.Areas.Admin.Controllers
           return HttpNotFound();
         }
 
-        user.IsDelete = true;
+        user.IsDeleted = true;
 
         foreach (var item in user.BuyerBooks)
         {
-          item.IsDelete = true;
+          item.IsDeleted = true;
         }
 
         await UserManager.UpdateAsync(user);
