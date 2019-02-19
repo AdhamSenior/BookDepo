@@ -13,9 +13,23 @@
   <img src="@Url.Content(Model.CoverImagePath)" alt="Cannot display cover" />
   @if (User.IsInRole(RoleList.Buyer))
   {
+
     <br />
-    <br />
-    <a href="mailto:@(Model.Seller.Email)?subject=@(Model.Name)&body=I want order on this book item #@(Model.Id)" class="btn btn-primary btn-lg" target="_top">Order</a>
+
+    <h2 class="text-success">
+      @TempData["success"]
+    </h2>
+
+    if (!Model.Offered && Model.BuyerId == null)
+    {
+      <br />
+      using (Html.BeginForm("Order", "Book", new { id = Model.Id }, FormMethod.Post))
+      {
+        <button type="submit" class="btn btn-primary btn-lg" target="_top">To Order</button>
+      }
+      <br />
+    }
+    <a href="mailto:@(Model.Seller.Email)?subject=@(Model.Name)&body=I want order on this book item #@(Model.Id)" class="btn btn-info btn-lg" target="_top">Seller e-mail</a>
   }
 </div>
 

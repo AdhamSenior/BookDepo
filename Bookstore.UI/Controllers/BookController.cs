@@ -71,6 +71,16 @@ namespace Bookstore.UI.Controllers
       return View(query.OrderByDescending(b => b.Id).ToPagedList(page, size));
     }
 
+    [Authorize(Roles = RoleList.Buyer)]
+    public ActionResult Offer(int page = 1)
+    {
+      var size = 20;
+      var userId = User.Identity.GetUserId();
+      var query = DbContext.Books.Where(book => !book.IsDelete && book.BuyerId == userId);
+
+      return View(query.OrderByDescending(b => b.Id).ToPagedList(page, size));
+    }
+
     public ActionResult Details(int id)
     {
       var model = DbContext.Books.Where(t => t.Id == id).Include(a => a.Seller).FirstOrDefault();
@@ -86,26 +96,47 @@ namespace Bookstore.UI.Controllers
 
     [Authorize(Roles = RoleList.Seller)]
     [HttpPost]
-    public ActionResult Add(Book book)
+    public ActionResult Add(Book model)
     {
       if (ModelState.IsValid)
       {
-        book.SellerId = User.Identity.GetUserId();
-        book.CoverImagePath = "~/Images/Covers/DefaultBookCover.jpg";
+        model.SellerId = User.Identity.GetUserId();
+        model.CoverImagePath = "~/Images/Covers/DefaultBookCover.jpg";
 
         if (Request.Files != null && Request.Files.Count > 0 && Request.Files[0].ContentLength > 0)
         {
           var fileName = Path.GetFileName(Request.Files[0].FileName);
           var filePathOfWebsite = "~/Images/Covers/" + fileName;
-          book.CoverImagePath = filePathOfWebsite;
+          model.CoverImagePath = filePathOfWebsite;
           Request.Files[0].SaveAs(Server.MapPath(filePathOfWebsite));
         }
-        DbContext.Entry(book).State = System.Data.Entity.EntityState.Added;
+        DbContext.Entry(model).State = EntityState.Added;
         DbContext.SaveChanges();
 
         return RedirectToAction("Index");
       }
-      return View(book);
+      return View(model);
+    }
+
+    [Authorize(Roles = RoleList.Buyer)]
+    [HttpPost]
+    public ActionResult Order(int id)
+    {
+      var model = DbContext.Books.SingleOrDefault(t => t.Id == id);
+
+      if (model != null && !model.Offered)
+      {
+        TempData["success"] = "Order Submission Successful!";
+
+        model.Offered = true;
+        model.OfferDate = DateTime.Now;
+        model.BuyerId = User.Identity.GetUserId();
+
+        DbContext.Entry(model).State = EntityState.Modified;
+        DbContext.SaveChanges();
+      }
+
+      return RedirectToAction("Details", new { id });
     }
 
     [Authorize(Roles = RoleList.Seller)]
@@ -115,7 +146,7 @@ namespace Bookstore.UI.Controllers
       var model = DbContext.Books.SingleOrDefault(t => t.Id == id);
 
       model.IsDelete = true;
-      DbContext.Entry(model).State = System.Data.Entity.EntityState.Modified;
+      DbContext.Entry(model).State = EntityState.Modified;
       DbContext.SaveChanges();
 
       return RedirectToAction("Index");
@@ -131,21 +162,21 @@ namespace Bookstore.UI.Controllers
 
     [Authorize(Roles = RoleList.Seller)]
     [HttpPost]
-    public ActionResult Edit(Book book)
+    public ActionResult Edit(Book model)
     {
       if (!ModelState.IsValid)
-        return View(book);
+        return View(model);
 
-      book.SellerId = User.Identity.GetUserId();
+      model.SellerId = User.Identity.GetUserId();
 
       if (Request.Files != null && Request.Files.Count > 0 && Request.Files[0].ContentLength > 0)
       {
         var fileName = Path.GetFileName(Request.Files[0].FileName);
         var filePathOfWebsite = "~/Images/Covers/" + fileName;
-        book.CoverImagePath = filePathOfWebsite;
+        model.CoverImagePath = filePathOfWebsite;
         Request.Files[0].SaveAs(Server.MapPath(filePathOfWebsite));
       }
-      DbContext.Entry(book).State = System.Data.Entity.EntityState.Modified;
+      DbContext.Entry(model).State = EntityState.Modified;
       DbContext.SaveChanges();
 
       return RedirectToAction("Index");

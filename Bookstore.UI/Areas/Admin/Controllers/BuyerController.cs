@@ -14,13 +14,13 @@ using System.Web.Mvc;
 namespace Bookstore.UI.Areas.Admin.Controllers
 {
   [Authorize(Roles = RoleList.Admin)]
-  public class UsersController : Controller
+  public class BuyerController : Controller
   {
-    public UsersController()
+    public BuyerController()
     {
     }
 
-    public UsersController(ApplicationUserManager userManager)
+    public BuyerController(ApplicationUserManager userManager)
     {
       UserManager = userManager;
     }

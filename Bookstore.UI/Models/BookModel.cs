@@ -45,13 +45,21 @@ namespace Bookstore.UI.Models
     [StringLength(50)]
     public string ISBN { get; set; }
 
-    [Column("datetime2")]
-    public DateTime Date { get; set; } = DateTime.Now;
+    [Column(TypeName ="datetime2")]
+    public DateTime CreatedDate { get; set; }
+
+    [Column(TypeName = "datetime2")]
+    public DateTime? ModefiedDate { get; set; }
 
     [StringLength(50)]
     public string SellerId { get; set; }
 
     public virtual ApplicationUser Seller { get; set; }
+
+    public bool Offered { get; set; }
+
+    [Column(TypeName = "datetime2")]
+    public DateTime? OfferDate { get; set; }
 
     [StringLength(50)]
     public string BuyerId { get; set; }

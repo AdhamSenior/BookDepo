@@ -1,23 +1,11 @@
 ﻿@model  IPagedList<Book>
 
 @{
-  ViewBag.Title = "Book List";
+  ViewBag.Title = "Offer List";
 }
 
 <div class="jumbotron">
-  @if (User.IsInRole(RoleList.Seller))
-  {
-    <p>@Html.ActionLink("Create", "Add")</p>
-  }
-  @using (Html.BeginForm())
-  {
-    @Html.Hidden("minPrice", (int?)ViewBag.MinPrice)
-    @Html.Hidden("maxPrice", (int?)ViewBag.MaxPrice)
-    <p id="searchSection">
-      @Html.TextBox("search", (string)ViewBag.Search, new { id = "txtSearch", placeholder = "Find by name" })
-      <input class="btn btn-primary" type="submit" value="Search" />
-    </p>
-  }
+  
   <table class="table table-bordered">
     <tr>
       <th>#</th>
@@ -37,11 +25,6 @@
         <td>@Html.DisplayFor(modelItel => book.Condition)</td>
         <td>
           @Html.ActionLink("Details", "Details", "Book", new { id = book.Id }, new { @class = "btn btn-info" })
-
-          @if (User.IsInRole(RoleList.Seller))
-          {
-            @Html.ActionLink("Edit", "Edit", "Book", new { id = book.Id }, new { @class = "btn btn-success" })
-          }
         </td>
 
       </tr>
