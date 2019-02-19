@@ -40,21 +40,26 @@ namespace Bookstore.UI.Controllers
     public ActionResult Index(string search, int? minPrice, int? maxPrice, int page = 1)
     {
       var size = 20;
-      var query = DbContext.Books.Where(book => book.IsDelete == true);
+      var query = DbContext.Books.Where(book => !book.IsDelete);
 
       if (!string.IsNullOrWhiteSpace(search))
       {
         query = query.Where(book => book.Name.Contains(search));
       }
 
-      if (minPrice.HasValue)
+      if (minPrice.HasValue && !maxPrice.HasValue)
       {
         query = query.Where(book => book.Price >= minPrice.Value);
       }
 
-      if (maxPrice.HasValue)
+      if (!minPrice.HasValue && maxPrice.HasValue)
       {
-        query = query.Where(book => book.Price >= maxPrice.Value);
+        query = query.Where(book => book.Price <= maxPrice.Value);
+      }
+
+      if (minPrice.HasValue && maxPrice.HasValue)
+      {
+        query = query.Where(book => book.Price >= minPrice.Value && book.Price <= maxPrice.Value);
       }
 
       ViewBag.Search = search;
@@ -109,7 +114,7 @@ namespace Bookstore.UI.Controllers
     {
 
       var model = DbContext.Books.SingleOrDefault(t => t.Id == id);
-       
+
       model.IsDelete = true;
       DbContext.Entry(model).State = System.Data.Entity.EntityState.Modified;
       DbContext.SaveChanges();
@@ -125,7 +130,7 @@ namespace Bookstore.UI.Controllers
       return View(model);
     }
 
-    [Authorize(Roles =RoleList.Seller)]
+    [Authorize(Roles = RoleList.Seller)]
     [HttpPost]
     public ActionResult Edit(Book book)
     {
