@@ -177,6 +177,7 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\Book\Offer.cshtml" />
     <Content Include="Views\Book\Deal.cshtml" />
+    <Content Include="Views\Book\Archive.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

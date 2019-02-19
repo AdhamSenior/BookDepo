@@ -1,7 +1,7 @@
 ﻿@model  IPagedList<Book>
 
 @{
-  ViewBag.Title = "Deal List";
+  ViewBag.Title = "Deals";
 }
 
 <table class="table table-bordered">
@@ -18,7 +18,16 @@
   {
     <tr>
       <td>@Html.DisplayFor(modelItem => item.Id)</td>
-      <td>@Html.DisplayFor(modelItem => item.Buyer.FullName)  (@Html.DisplayFor(modelItem => item.Buyer.Email))</td>
+      <td>
+        @if (item.Buyer != null)
+        {
+          @(item.Buyer.FullName +"( "+   item.Buyer.Email+" )")
+        }
+        else
+        {
+          <span class="text-danger">User is deleted</span>
+        }
+      </td>
       <td>
         @Html.ActionLink(item.Name, "Details", new { id = item.Id })
       </td>
@@ -50,6 +59,6 @@
 </table>
 
 <p>
-  @Html.PagedListPager(Model, page => Url.Action("Index", new { page, minPrice = ViewBag.MinPrice, maxPrice = ViewBag.MaxPrice, search = ViewBag.Search }))
+  @Html.PagedListPager(Model, page => Url.Action("Deal", new { page, minPrice = ViewBag.MinPrice, maxPrice = ViewBag.MaxPrice, search = ViewBag.Search }))
 </p>
 

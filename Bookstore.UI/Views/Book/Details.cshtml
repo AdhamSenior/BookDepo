@@ -27,9 +27,21 @@
 
   @if (Model.Offered == true)
   {
-    <h2 class="text-success">
-      Order is accepted for Buyer:@Model.Buyer.FullName (@Model.Buyer.Email)
-    </h2>
+    if (Model.Buyer != null)
+    {
+      <h2>
+        Order is accepted for Buyer:
+
+        <span class="text-success"> @(Model.Buyer.FullName + "( " + Model.Buyer.Email + " )")</span>
+
+      </h2>
+    }
+    else
+    {
+      <h2>
+        Order is accepted for Buyer: <span class="text-danger"> User is deleted</span>
+      </h2>
+    }
   }
 
   @if (User.IsInRole(RoleList.Buyer))
@@ -91,9 +103,18 @@
 
       if (Model.Offered == false)
       {
-          <h2 class="text-warning">
-            Order is rejected for Buyer: @Model.Buyer.FullName (@Model.Buyer.Email)
+        if (Model.Buyer != null)
+        {
+          <h2>
+            Order is rejected for Buyer: <span class="text-warning"> @(Model.Buyer.FullName + "( " + Model.Buyer.Email + " )")</span>
           </h2>
+        }
+        else
+        {
+          <h2>
+            Order is rejected for Buyer: <span class="text-danger"> User is deleted</span>
+          </h2>
+        }
         <br />
         using (Html.BeginForm("Available", "Book", new { id = Model.Id }, FormMethod.Post))
         {
@@ -101,9 +122,12 @@
         }
       }
       <br />
-      <p>
-        <a href="mailto:@(Model.Buyer.Email)" class="btn btn-info btn-lg" target="_top">E-mail</a>
-      </p>
+      if (Model.Buyer != null)
+      {
+        <p>
+          <a href="mailto:@(Model.Buyer.Email)" class="btn btn-info btn-lg" target="_top">E-mail</a>
+        </p>
+      }
     }
   }
 

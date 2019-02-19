@@ -47,7 +47,7 @@ namespace Bookstore.UI.Models
     {
 
       try
-      { 
+      {
         return base.SaveChanges();
       }
       catch (DbEntityValidationException e)
@@ -83,7 +83,8 @@ namespace Bookstore.UI.Models
          .WithMany(g => g.SellerBooks)
          .HasForeignKey(s => s.SellerId);
 
-      modelBuilder.DisableFilterGlobally("IsDeleted");
+      modelBuilder.Filter("IsDeleted", (Book a) => a.IsDeleted, false);
+      modelBuilder.Filter("IsDeleted", (ApplicationUser a) => a.IsDeleted, false);
     }
 
     public static ApplicationDbContext Create()

@@ -1,18 +1,26 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Bookstore.UI.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
 
 namespace Bookstore.UI.Controllers
 {
   [Authorize]
   public class ManageController : Controller
   {
+    public enum ManageMessageId
+    {
+      AddPhoneSuccess,
+      ChangePasswordSuccess,
+      SetTwoFactorSuccess,
+      SetPasswordSuccess,
+      RemoveLoginSuccess,
+      RemovePhoneSuccess,
+      Error
+    }
+
     private ApplicationSignInManager _signInManager;
     private ApplicationUserManager _userManager;
 
@@ -28,26 +36,14 @@ namespace Bookstore.UI.Controllers
 
     public ApplicationSignInManager SignInManager
     {
-      get
-      {
-        return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-      }
-      private set
-      {
-        _signInManager = value;
-      }
+      get => _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+      private set => _signInManager = value;
     }
 
     public ApplicationUserManager UserManager
     {
-      get
-      {
-        return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-      }
-      private set
-      {
-        _userManager = value;
-      }
+      get => _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+      private set => _userManager = value;
     }
 
     //
@@ -55,10 +51,10 @@ namespace Bookstore.UI.Controllers
     public ActionResult Index(ManageMessageId? message)
     {
       ViewBag.StatusMessage =
-          message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-          : message == ManageMessageId.Error ? "An error has occurred."
-          : ""; 
-      return View( );
+        message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
+        : message == ManageMessageId.Error ? "An error has occurred."
+        : "";
+      return View();
     }
 
     //
@@ -74,20 +70,16 @@ namespace Bookstore.UI.Controllers
     [ValidateAntiForgeryToken]
     public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
     {
-      if (!ModelState.IsValid)
-      {
-        return View(model);
-      }
-      var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+      if (!ModelState.IsValid) return View(model);
+      var result =
+        await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
       if (result.Succeeded)
       {
         var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-        if (user != null)
-        {
-          await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-        }
-        return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+        if (user != null) await SignInManager.SignInAsync(user, false, false);
+        return RedirectToAction("Index", new {Message = ManageMessageId.ChangePasswordSuccess});
       }
+
       AddErrors(result);
       return View(model);
     }
@@ -107,22 +99,7 @@ namespace Bookstore.UI.Controllers
 
     private void AddErrors(IdentityResult result)
     {
-      foreach (var error in result.Errors)
-      {
-        ModelState.AddModelError("", error);
-      }
+      foreach (var error in result.Errors) ModelState.AddModelError("", error);
     }
-
-    public enum ManageMessageId
-    {
-      AddPhoneSuccess,
-      ChangePasswordSuccess,
-      SetTwoFactorSuccess,
-      SetPasswordSuccess,
-      RemoveLoginSuccess,
-      RemovePhoneSuccess,
-      Error
-    }
-
   }
 }

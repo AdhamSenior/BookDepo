@@ -3,9 +3,8 @@
   ViewBag.Title = "Edit a book:";
 }
 
-@using (Html.BeginForm("Edit", "Book", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Edit", "Book", new { id = Model.Id }, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-  @Html.HiddenFor(m => m.Id)
 
   <div>Name:</div>
   @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
@@ -22,7 +21,7 @@
   @Html.TextBoxFor(m => m.Author, new { @class = "form-control" })
   @Html.ValidationMessageFor(m => m.Author)
   <div>Description:</div>
-  @Html.TextAreaFor(m => m.Description, 10, 50,new { })
+  @Html.TextAreaFor(m => m.Description, 10, 50, new { })
   @Html.ValidationMessageFor(m => m.Description)
   <div>Condition:</div>
 
