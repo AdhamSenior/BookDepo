@@ -313,7 +313,7 @@ namespace Bookstore.UI.Controllers
         Request.Files[0].SaveAs(Server.MapPath(filePathOfWebsite));
       }
 
-      DbContext.Entry(model).State = EntityState.Modified;
+      DbContext.Entry(ent).State = EntityState.Modified;
 
       await DbContext.SaveChangesAsync();
 
