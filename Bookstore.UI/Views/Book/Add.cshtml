@@ -10,9 +10,11 @@
     <div>Name:</div>
     @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
     @Html.ValidationMessageFor(m => m.Name)
+
     <div>Price:</div>
     @Html.TextBoxFor(m => m.Price, new { @class = "form-control" })
     @Html.ValidationMessageFor(m => m.Price)
+
     <div>Cover Image:</div>
     <input type="file" name="cover" class="form-control"/>
     @Html.HiddenFor(m => m.CoverImagePath)
@@ -20,9 +22,11 @@
     <div>Authors:</div>
     @Html.TextBoxFor(m => m.Author, new { @class = "form-control" })
     @Html.ValidationMessageFor(m => m.Author)
-    <div>Description:</div>
-    @Html.TextAreaFor(m => m.Description,10,50, new { @class = "form-control" })
-    @Html.ValidationMessageFor(m => m.Description)
+
+    <div>Year:</div>
+    @Html.TextBoxFor(m => m.PublishYear, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.PublishYear)
+
     <div>Condition:</div>
 
     @Html.RadioButtonFor(model => model.Condition, "New")
@@ -32,6 +36,11 @@
 
     <div>ISBN:</div>
     @Html.TextBoxFor(m => m.ISBN, new { @class = "form-control" })
+
+    <div>Description:</div>
+    @Html.TextAreaFor(m => m.Description,10,50, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Description)
+
     <br />
     <input type="submit" value="Add" class="btn btn-primary btn-lg" /> 
   } 

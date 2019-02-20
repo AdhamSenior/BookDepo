@@ -23,24 +23,26 @@
     <th>Name</th>
     <th>Price</th>
     <th>Image</th>
+    <th>Published</th>
     <th>Condition</th>
   </tr>
   @foreach (var item in Model)
   {
-    <tr>
-      <td>@Html.DisplayFor(modelItem => item.Id)</td>
-      <td>
-        @Html.ActionLink(item.Name,"Details",new { id = item.Id })
-      </td>
-      <td>$ @Html.DisplayFor(modelItem => item.Price)</td>
-      <td>
-        <a target="_blank" href="@Url.Content(item.CoverImagePath)">
-          <img src="@Url.Content(item.CoverImagePath)?width=120&height=160&crop=auto" alt="Cannot display cover" />
-        </a>
-      </td>
-      <td>@Html.DisplayFor(modelItem => item.Condition)</td>
+  <tr>
+    <td>@Html.DisplayFor(modelItem => item.Id)</td>
+    <td>
+      @Html.ActionLink(item.Name, "Details", new { id = item.Id })
+    </td>
+    <td>$ @Html.DisplayFor(modelItem => item.Price)</td>
+    <td>
+      <a target="_blank" href="@Url.Content(item.CoverImagePath)">
+        <img src="@Url.Content(item.CoverImagePath)?width=120&height=160&crop=auto&format=png" alt="Cannot display cover" />
+      </a>
+    </td>
+    <td>@Html.DisplayFor(modelItem => item.PublishYear)</td>
+    <td>@Html.DisplayFor(modelItem => item.Condition)</td>
 
-    </tr>
+  </tr>
 
   }
 </table>

@@ -9,6 +9,7 @@
   <div>Name:</div>
   @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
   @Html.ValidationMessageFor(m => m.Name)
+ 
   <div>Price:</div>
   @Html.TextBoxFor(m => m.Price, new { @class = "form-control" })
   @Html.ValidationMessageFor(m => m.Price)
@@ -20,11 +21,12 @@
   <div>Authors:</div>
   @Html.TextBoxFor(m => m.Author, new { @class = "form-control" })
   @Html.ValidationMessageFor(m => m.Author)
-  <div>Description:</div>
-  @Html.TextAreaFor(m => m.Description, 10, 50, new { })
-  @Html.ValidationMessageFor(m => m.Description)
-  <div>Condition:</div>
 
+  <div>Published:</div>
+  @Html.TextBoxFor(m => m.PublishYear, new { @class = "form-control" })
+  @Html.ValidationMessageFor(m => m.PublishYear)
+
+  <div>Condition:</div>
   @Html.RadioButtonFor(model => model.Condition, "New")
   @Html.Label("New", "New")
   @Html.RadioButtonFor(model => model.Condition, "Used")
@@ -32,6 +34,11 @@
 
   <div>ISBN:</div>
   @Html.TextBoxFor(m => m.ISBN, new { @class = "form-control" })
+
+  <div>Description:</div>
+  @Html.TextAreaFor(m => m.Description, 10, 50, new { })
+  @Html.ValidationMessageFor(m => m.Description)
+
   <br />
   <input type="submit" value="Edit" class="btn btn-success btn-lg" />
 }

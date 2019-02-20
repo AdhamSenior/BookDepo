@@ -297,6 +297,12 @@ namespace Bookstore.UI.Controllers
         return HttpNotFound();
 
       ent.SellerId = User.Identity.GetUserId();
+      ent.Condition = model.Condition;
+      ent.PublishYear = model.PublishYear;
+      ent.Description = model.Description;
+      ent.ISBN = model.ISBN;
+      ent.Price = model.Price;
+      ent.Name = model.Name;
       ent.ModifiedDate = DateTime.Now;
 
       if (Request.Files != null && Request.Files.Count > 0 && Request.Files[0].ContentLength > 0)

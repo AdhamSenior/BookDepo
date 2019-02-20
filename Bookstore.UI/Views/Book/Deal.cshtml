@@ -13,47 +13,49 @@
     <th>Status</th>
     <th>Image</th>
     <th>Condition</th>
+    <th>Offered</th>
   </tr>
   @foreach (var item in Model)
   {
-    <tr>
-      <td>@Html.DisplayFor(modelItem => item.Id)</td>
-      <td>
-        @if (item.Buyer != null)
-        {
-          @(item.Buyer.FullName +"( "+   item.Buyer.Email+" )")
-        }
-        else
-        {
-          <span class="text-danger">User is deleted</span>
-        }
-      </td>
-      <td>
-        @Html.ActionLink(item.Name, "Details", new { id = item.Id })
-      </td>
-      <td>$ @Html.DisplayFor(modelItem => item.Price)</td>
-      <td>
-        @if (item.Offered == true)
-        {
-          <h4 class="alert alert-success">Accepted</h4>
-        }
-        @if (item.Offered == false)
-        {
-          <h4 class="alert alert-danger">Rejected</h4>
-        }
-        @if (item.Offered == null)
-        {
-          <h4 class="alert alert-warning">In process</h4>
-        }
-      </td>
-      <td>
-        <a target="_blank" href="@Url.Content(item.CoverImagePath)">
-          <img src="@Url.Content(item.CoverImagePath)?width=120&height=160&crop=auto" alt="Cannot display cover" />
-        </a>
-      </td>
-      <td>@Html.DisplayFor(modelItem => item.Condition)</td>
+  <tr>
+    <td>@Html.DisplayFor(modelItem => item.Id)</td>
+    <td>
+      @if (item.Buyer != null)
+      {
+        @(item.Buyer.FullName + "( " + item.Buyer.Email + " )")
+      }
+      else
+      {
+        <span class="text-danger">User is deleted</span>
+      }
+    </td>
+    <td>
+      @Html.ActionLink(item.Name, "Details", new { id = item.Id })
+    </td>
+    <td>$ @Html.DisplayFor(modelItem => item.Price)</td>
+    <td>
+      @if (item.Offered == true)
+      {
+        <h4 class="alert alert-success">Accepted</h4>
+      }
+      @if (item.Offered == false)
+      {
+        <h4 class="alert alert-danger">Rejected</h4>
+      }
+      @if (item.Offered == null)
+      {
+        <h4 class="alert alert-warning">In process</h4>
+      }
+    </td>
+    <td>
+      <a target="_blank" href="@Url.Content(item.CoverImagePath)">
+        <img src="@Url.Content(item.CoverImagePath)?width=120&height=160&crop=auto&format=png" alt="Cannot display cover" />
+      </a>
+    </td>
+    <td>@Html.DisplayFor(modelItem => item.OfferDate)</td>
+    <td>@Html.DisplayFor(modelItem => item.Condition)</td>
 
-    </tr>
+  </tr>
 
   }
 </table>
